@@ -14,7 +14,7 @@ export default function Header() {
         <Link href="/" className="relative flex items-center">
           <div className="relative h-10 w-[160px] sm:h-12 sm:w-[200px]">
             <Image
-              src="/web_logo_300_v2.png"
+              src="/web_logo_300_v3.png"
               alt="Drive For Me - Designated Driver Service"
               fill
               priority
