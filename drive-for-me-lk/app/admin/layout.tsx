@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import "./globals.css";
+import "../../app/globals.css";
+import AdminSidebar from "../components/AdminSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,17 +18,16 @@ export const metadata: Metadata = {
   description: "Created by iKronyx",
 };
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <div className="flex min-h-screen bg-gray-100">
+      <AdminSidebar />
+
+      <main className="flex-1 p-6 md:p-10">{children}</main>
+    </div>
   );
 }
