@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, Car, Users, Settings } from "lucide-react";
+import { LayoutDashboard, Car, Users, Settings, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const navItems = [
@@ -11,34 +11,69 @@ const navItems = [
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
-export default function AdminSidebar() {
+interface Props {
+  open: boolean;
+  setOpen: (val: boolean) => void;
+}
+
+export default function AdminSidebar({ open, setOpen }: Props) {
   const pathname = usePathname();
 
   return (
-    <aside className="h-screen w-64 bg-black text-white hidden md:flex flex-col p-6">
-      <h2 className="text-xl font-bold mb-8 text-[var(--primary)]">
-        Admin Panel
-      </h2>
+    <>
+      {/* Overlay (Mobile Only) */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
 
-      <nav className="space-y-3">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active = pathname === item.href;
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed z-50 h-full w-64 bg-black text-white p-6
+          transform transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:static md:translate-x-0
+        `}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-xl font-bold text-[var(--primary)]">
+            Admin Panel
+          </h2>
 
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition ${
-                active ? "bg-[var(--primary)] text-white" : "hover:bg-white/10"
-              }`}
-            >
-              <Icon size={18} />
-              {item.name}
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+          {/* Close button (Mobile) */}
+          <button className="md:hidden" onClick={() => setOpen(false)}>
+            <X size={22} />
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="space-y-3">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = pathname === item.href;
+
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition ${
+                  active
+                    ? "bg-[var(--primary)] text-white"
+                    : "hover:bg-white/10"
+                }`}
+              >
+                <Icon size={18} />
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
