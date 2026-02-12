@@ -12,10 +12,11 @@ export default function AdminLayoutClient({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="bg-gray-100">
       <AdminSidebar open={open} setOpen={setOpen} />
 
-      <div className="flex flex-1 flex-col">
+      {/* Content wrapper */}
+      <div className="md:ml-64 flex min-h-screen flex-col">
         {/* Mobile Topbar */}
         <div className="flex items-center justify-between bg-black px-6 py-4 text-white md:hidden">
           <h1 className="font-bold text-[var(--primary)]">Admin Panel</h1>
@@ -24,7 +25,7 @@ export default function AdminLayoutClient({
           </button>
         </div>
 
-        <main className="flex-1 p-6 md:p-10">{children}</main>
+        <main className="flex-1 p-6 md:p-10 overflow-y-auto">{children}</main>
       </div>
     </div>
   );
