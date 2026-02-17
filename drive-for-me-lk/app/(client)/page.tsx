@@ -1,12 +1,19 @@
+"use client";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import { Car, DollarSign, ShieldCheck, MapPin, Flag } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const router = useRouter();
+  function handleGetDriver(e: React.MouseEvent) {
+    e.preventDefault();
+    router.push("/bookings");
+  }
   return (
     <>
-      <Header />
+      {/* <Header /> */}
 
       <main className="w-full overflow-x-hidden">
         {/* HERO / BANNER SECTION */}
@@ -35,7 +42,7 @@ export default function HomePage() {
               Estimate Your Fare
             </h1>
             <p className="mb-6 text-center text-sm text-gray-500">
-              Party on, ride safe 🇱🇰
+              Party on, ride safe
             </p>
 
             <form className="space-y-6">
@@ -87,13 +94,23 @@ export default function HomePage() {
               >
                 Get an Estimate
               </button>
+              <button
+                type="button"
+                onClick={handleGetDriver}
+                className="w-full rounded-xl bg-[var(--primary-dark)] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl active:scale-95 cursor-pointer"
+              >
+                Get a Driver
+              </button>
             </form>
           </div>
         </section>
 
         {/* SAFETY & TRUST SECTION */}
         {/* TRUST & SAFETY SECTION */}
-        <section className="relative mx-auto max-w-7xl px-6 py-20 text-center">
+        <section
+          id="about"
+          className="relative mx-auto max-w-7xl px-6 py-20 text-center"
+        >
           {/* Subtle background circles */}
           <div className="absolute left-1/4 top-0 -z-10 h-64 w-64 rounded-full bg-[var(--primary)]/10 blur-3xl"></div>
           <div className="absolute right-1/4 bottom-0 -z-10 h-64 w-64 rounded-full bg-[var(--primary)]/10 blur-3xl"></div>
@@ -167,15 +184,15 @@ export default function HomePage() {
             Book a designated driver and get home safely.
           </p>
           <Link
-            href="/contact"
+            href="/bookings"
             className="mt-8 inline-block rounded-xl bg-[var(--primary)] px-10 py-4 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105 hover:shadow-2xl hover:bg-blue-700"
           >
-            Contact Us
+            Get a Driver
           </Link>
         </section>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

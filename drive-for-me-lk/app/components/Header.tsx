@@ -32,7 +32,7 @@ export default function Header() {
             Home
           </Link>
           <Link
-            href="/about"
+            href="/#about"
             className="text-sm font-medium text-gray-700 transition hover:text-[var(--primary)]"
           >
             About Us
@@ -45,9 +45,15 @@ export default function Header() {
           </Link>
           <Link
             href="/contact"
-            className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+            className="text-sm font-medium text-gray-700 transition hover:text-[var(--primary)]"
           >
             Contact Us
+          </Link>
+          <Link
+            href="/bookings"
+            className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+          >
+            Get a Driver
           </Link>
         </nav>
 

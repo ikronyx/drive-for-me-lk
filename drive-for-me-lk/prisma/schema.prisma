@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bookings {
+  id                        Int                         @id @default(autoincrement())
+  customer_name             String
+  phone                     String
+  pickup_location           String
+  dropoff_location          String?
+  arrival_time              DateTime?                   @db.Timestamp(6)
+  landmark                  String?
+  vehicle_reg_no            String?
+  notes                     String?
+  distance_km               Decimal?                    @db.Decimal
+  estimated_fare            Decimal?                    @db.Decimal
+  payment_status            String?                     @default("unpaid")
+  updated_at                DateTime?                   @default(now()) @db.Timestamp(6)
+  status                    String?
+  booking_driver_assignment booking_driver_assignment[]
+
+  @@index([status], map: "idx_booking_status")
+}
+
+model drivers {
+  id                        Int                         @id @default(autoincrement())
+  full_name                 String                      @db.VarChar(100)
+  address                   String
+  nic                       String                      @unique @db.VarChar(12)
+  driver_license            String                      @unique @db.VarChar
+  phone_primary             String                      @db.VarChar(15)
+  phone_secondary           String?                     @db.VarChar(15)
+  nationality               String?                     @db.VarChar(50)
+  languages                 String?
+  status                    String?                     @default("active") @db.VarChar(20)
+  created_at                DateTime?                   @default(now()) @db.Timestamp(6)
+  updated_at                DateTime?                   @default(now()) @db.Timestamp(6)
+  gender                    String?
+  booking_driver_assignment booking_driver_assignment[]
+  driver_availability       driver_availability[]
+
+  @@index([nic], map: "idx_drivers_nic")
+  @@index([status], map: "idx_drivers_status")
+}
+
+model booking_driver_assignment {
+  id          Int       @id @default(autoincrement())
+  booking_id  Int
+  driver_id   Int
+  assigned_at DateTime? @default(now()) @db.Timestamp(6)
+  status      String?   @default("assigned") @db.VarChar(20)
+  notes       String?
+  bookings    bookings  @relation(fields: [booking_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  drivers     drivers   @relation(fields: [driver_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([booking_id], map: "idx_booking_driver_assignment_booking")
+  @@index([driver_id], map: "idx_booking_driver_assignment_driver")
+}
+
+model driver_availability {
+  id             Int       @id @default(autoincrement())
+  driver_id      Int
+  available_from DateTime  @db.Timestamp(6)
+  available_to   DateTime  @db.Timestamp(6)
+  status         String?   @default("available") @db.VarChar(20)
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  updated_at     DateTime? @default(now()) @db.Timestamp(6)
+  drivers        drivers   @relation(fields: [driver_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([driver_id, status], map: "idx_driver_availability_driver_status")
+}
