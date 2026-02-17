@@ -139,6 +139,10 @@ export default function BookingsAdminPage() {
               <tr
                 key={b.id}
                 className="border-t hover:bg-gray-50 cursor-pointer"
+                onClick={() => {
+                  setSelected(b);
+                  setShowModal(true);
+                }}
               >
                 <td className="p-3">{b.customer_name}</td>
                 <td className="p-3">{b.phone}</td>

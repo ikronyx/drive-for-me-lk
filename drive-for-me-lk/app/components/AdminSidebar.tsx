@@ -19,7 +19,7 @@ const navItems = [
     href: "/admin/bookings/all",
     icon: Car,
     sub: [
-      { name: "Ongoing", href: "/admin/bookings/ongoing" },
+      // { name: "Ongoing", href: "/admin/bookings/ongoing" },
       // { name: "Completed", href: "/admin/bookings/completed" },
       { name: "All", href: "/admin/bookings/all" },
     ],
