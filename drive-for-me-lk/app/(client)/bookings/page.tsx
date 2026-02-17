@@ -54,6 +54,27 @@ export default function BookingPage() {
     setLoading(false);
   }
 
+  function BookingLoader({ visible }: { visible: boolean }) {
+    if (!visible) return null;
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white rounded-2xl px-8 py-6 shadow-2xl flex flex-col items-center gap-4 animate-[fadeIn_0.3s_ease]">
+          {/* Spinner */}
+          <div className="h-12 w-12 border-4 border-gray-200 border-t-[var(--primary)] rounded-full animate-spin" />
+
+          {/* Text */}
+          <div className="text-center">
+            <h2 className="font-semibold text-lg">Processing Booking</h2>
+            <p className="text-sm text-gray-500">
+              Please wait while we confirm your driver...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12"
@@ -71,6 +92,7 @@ export default function BookingPage() {
           </div>
         </div>
       )}
+      <BookingLoader visible={loading} />
 
       <div className="w-full max-w-xl rounded-3xl bg-white p-8 shadow-2xl md:p-10 relative">
         {/* Glow effects */}

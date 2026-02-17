@@ -17,7 +17,7 @@ export default function HomePage() {
 
       <main className="w-full overflow-x-hidden">
         {/* HERO / BANNER SECTION */}
-        <section
+        {/* <section
           className="relative flex min-h-[90vh] items-center justify-center px-4"
           style={{
             backgroundImage: `url('/hero-banner.webp')`,
@@ -26,15 +26,15 @@ export default function HomePage() {
             backgroundRepeat: "no-repeat",
           }}
         >
-          {/* Gradient Overlay */}
+         
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
 
-          {/* Fare Estimator Card */}
+          
           <div
             className="relative z-10 w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl md:p-10
   transform transition-all duration-500 hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,50,255,0.2)]"
           >
-            {/* Floating Gradient Accent Circle */}
+           
             <div className="absolute -top-10 -left-10 h-24 w-24 rounded-full bg-gradient-to-br from-[var(--primary)]/30 to-[#0032ff]/10 blur-3xl animate-pulse-slow" />
             <div className="absolute -bottom-10 -right-10 h-24 w-24 rounded-full bg-gradient-to-tr from-[#0032ff]/20 to-[var(--primary)]/20 blur-3xl animate-pulse-slow" />
 
@@ -46,7 +46,7 @@ export default function HomePage() {
             </p>
 
             <form className="space-y-6">
-              {/* Pick Up */}
+              
               <div className="relative">
                 <label className="mb-1 block text-sm font-medium text-gray-700">
                   Pick Up
@@ -66,7 +66,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Drop Off */}
+              
               <div className="relative">
                 <label className="mb-1 block text-sm font-medium text-gray-700">
                   Drop Off
@@ -86,7 +86,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Submit Button */}
+              
               <button
                 type="submit"
                 className="mt-4 w-full rounded-xl bg-gradient-to-r from-[var(--primary)] to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all
@@ -102,6 +102,52 @@ export default function HomePage() {
                 Get a Driver
               </button>
             </form>
+          </div>
+        </section> */}
+
+        <section
+          className="relative flex min-h-[90vh] flex-col px-4 pb-12 pt-16"
+          style={{
+            backgroundImage: `url('/hero-banner.webp')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
+
+          {/* Content Container */}
+          <div className="relative z-10 flex flex-col flex-grow justify-center items-center text-center max-w-3xl mx-auto">
+            {/* Title */}
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white drop-shadow-lg mb-4">
+              PARTY ON, RIDE SAFE
+            </h1>
+            <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-4"></h3>
+
+            {/* Description */}
+            <p className="text-white text-base sm:text-base mb-6 leading-relaxed drop-shadow-md">
+              Drive For Me offers a reliable way to enjoy your night without the
+              risk of driving under influence. Our licensed, friendly, and fully
+              vetted drivers will get you home safely, efficiently, and
+              comfortably.
+            </p>
+          </div>
+
+          {/* Buttons */}
+          <div className="relative z-10 flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto justify-center">
+            <a
+              href="/bookings"
+              className="flex-1 rounded-xl bg-[var(--primary)] px-6 py-4 text-center text-white font-bold text-lg shadow-lg transition-all hover:bg-[var(--primary-dark)] active:scale-95"
+            >
+              Get a Driver Now
+            </a>
+            <a
+              href="/rates"
+              className="flex-1 rounded-xl bg-white px-6 py-4 text-center text-[var(--primary-dark)] font-bold text-lg shadow-lg transition-all hover:bg-gray-100 active:scale-95"
+            >
+              Our Rates
+            </a>
           </div>
         </section>
 
