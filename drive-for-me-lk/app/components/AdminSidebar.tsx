@@ -20,12 +20,12 @@ const navItems = [
     icon: Car,
     sub: [
       { name: "Ongoing", href: "/admin/bookings/ongoing" },
-      { name: "Completed", href: "/admin/bookings/completed" },
+      // { name: "Completed", href: "/admin/bookings/completed" },
       { name: "All", href: "/admin/bookings/all" },
     ],
   },
   { name: "Drivers", href: "/admin/drivers", icon: Users },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+  // { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 interface Props {
