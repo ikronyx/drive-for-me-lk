@@ -1,20 +1,37 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
+
   const page = parseInt(searchParams.get("page") || "1");
   const search = searchParams.get("search") || "";
   const sort = searchParams.get("sort") || "id";
+
   const pageSize = 10;
   const skip = (page - 1) * pageSize;
 
-  const where = search
+  // ✅ Correct Prisma typed filter
+  const where: Prisma.driversWhereInput = search
     ? {
         OR: [
-          { full_name: { contains: search, mode: "insensitive" } },
-          { phone_primary: { contains: search } },
-          { nic: { contains: search } },
+          {
+            full_name: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive, // ✅ FIX
+            },
+          },
+          {
+            phone_primary: {
+              contains: search,
+            },
+          },
+          {
+            nic: {
+              contains: search,
+            },
+          },
         ],
       }
     : {};
@@ -25,7 +42,9 @@ export async function GET(req: Request) {
       where,
       skip,
       take: pageSize,
-      orderBy: { [sort]: "desc" },
+      orderBy: {
+        [sort]: "desc",
+      },
     }),
   ]);
 
@@ -34,14 +53,4 @@ export async function GET(req: Request) {
     data,
     totalPages: Math.ceil(total / pageSize),
   });
-}
-
-export async function POST(req: Request) {
-  const body = await req.json();
-  try {
-    const driver = await prisma.drivers.create({ data: body });
-    return NextResponse.json({ ok: true, driver });
-  } catch (err: any) {
-    return NextResponse.json({ ok: false, error: err.message });
-  }
 }
