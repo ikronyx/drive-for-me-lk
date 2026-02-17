@@ -6,13 +6,13 @@ export async function PUT(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = await context.params; // ✅ await params
-    const bookingId = parseInt(id);
+    const params = await context.params; //
+    const id = Number(params.id);
 
     const body = await req.json();
 
     const updated = await prisma.bookings.update({
-      where: { id: bookingId },
+      where: { id },
       data: {
         customer_name: body.customer_name,
         phone: body.phone,
