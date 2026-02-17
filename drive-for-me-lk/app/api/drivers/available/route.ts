@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     });
 
     // Map to id + name
-    const drivers = availableDrivers.map((d) => ({
+    const drivers = availableDrivers.map((d: any) => ({
       id: d.driver_id,
       name: d.drivers.full_name, // make sure your driver model has a 'name' field
     }));
