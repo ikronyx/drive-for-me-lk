@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Search, Trash2 } from "lucide-react";
 import DriverModal from "@/app/components/DriverModal";
+import AvailabilityModal from "@/app/components/AvailabilityModal";
 
 type Driver = {
   id: number;
@@ -30,6 +31,7 @@ export default function DriversAdminPage() {
 
   const [selected, setSelected] = useState<Driver | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
 
   async function fetchData() {
     setLoading(true);
@@ -137,18 +139,32 @@ export default function DriversAdminPage() {
                 <td>{d.driver_license}</td>
                 <td>{d.status || "-"}</td>
                 <td className="p-3 flex gap-2">
+                  {/* EDIT */}
                   <button
                     onClick={() => {
                       setSelected(d);
                       setShowModal(true);
                     }}
-                    className="text-blue-500 hover:underline"
+                    className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
                   >
                     Edit
                   </button>
+
+                  {/* AVAILABILITY */}
+                  <button
+                    onClick={() => {
+                      setSelected(d);
+                      setShowAvailabilityModal(true);
+                    }}
+                    className="bg-amber-500 text-white px-3 py-1 rounded-lg hover:bg-amber-600"
+                  >
+                    Availability
+                  </button>
+
+                  {/* DELETE */}
                   <button
                     onClick={() => handleDelete(d)}
-                    className="text-red-500 hover:underline"
+                    className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
                   >
                     Delete
                   </button>
@@ -184,6 +200,15 @@ export default function DriversAdminPage() {
           onClose={() => {
             setShowModal(false);
             fetchData();
+          }}
+        />
+      )}
+      {showAvailabilityModal && selected && (
+        <AvailabilityModal
+          driver={selected}
+          onClose={() => {
+            setShowAvailabilityModal(false);
+            setSelected(null);
           }}
         />
       )}
