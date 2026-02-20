@@ -49,12 +49,45 @@ export async function GET(req: NextRequest) {
       orderBy: {
         [sort]: "desc",
       },
+      include: {
+        driver_availability: {
+          take: 1,
+          orderBy: {
+            available_from: "desc", // latest availability
+          },
+        },
+      },
     }),
   ]);
 
+  const formatted = data.map((d: any) => {
+    const availability = d.driver_availability?.[0];
+
+    return {
+      id: d.id,
+      full_name: d.full_name,
+      address: d.address,
+      nic: d.nic,
+      driver_license: d.driver_license,
+      phone_primary: d.phone_primary,
+      phone_secondary: d.phone_secondary,
+      nationality: d.nationality,
+      languages: d.languages,
+      status: d.status,
+      gender: d.gender,
+      created_at: d.created_at,
+      updated_at: d.updated_at,
+
+      // ✅ availability fields
+      available_from: availability?.available_from || null,
+      available_to: availability?.available_to || null,
+      availability_status: availability?.status || "unavailable",
+    };
+  });
+
   return NextResponse.json({
     ok: true,
-    data,
+    data: formatted,
     totalPages: Math.ceil(total / pageSize),
   });
 }

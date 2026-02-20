@@ -19,6 +19,11 @@ type Driver = {
   gender?: string;
   created_at?: string;
   updated_at?: string;
+
+  // ✅ NEW FIELDS
+  available_from?: string | null;
+  available_to?: string | null;
+  availability_status?: string;
 };
 
 export default function DriversAdminPage() {
@@ -60,6 +65,18 @@ export default function DriversAdminPage() {
       fetchData();
     }
   };
+
+  function isAvailableNow(driver: Driver) {
+    if (!driver.available_from || !driver.available_to) return false;
+
+    const now = new Date();
+    const from = new Date(driver.available_from);
+    const to = new Date(driver.available_to);
+
+    return (
+      now >= from && now <= to && driver.availability_status === "available"
+    );
+  }
 
   return (
     <div className="p-8">
@@ -116,6 +133,7 @@ export default function DriversAdminPage() {
               <th className="p-3">NIC</th>
               <th className="p-3">License</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Available Now</th>
               <th className="p-3">Actions</th>
             </tr>
           </thead>
@@ -138,6 +156,19 @@ export default function DriversAdminPage() {
                 <td>{d.nic}</td>
                 <td>{d.driver_license}</td>
                 <td>{d.status || "-"}</td>
+                <td className="p-3">
+                  {isAvailableNow(d) ? (
+                    <span className="flex items-center gap-2 text-green-600 font-medium">
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                      Available
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2 text-gray-500">
+                      <span className="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
+                      Unavailable
+                    </span>
+                  )}
+                </td>
                 <td className="p-3 flex gap-2">
                   {/* EDIT */}
                   <button
