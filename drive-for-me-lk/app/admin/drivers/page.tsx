@@ -133,7 +133,7 @@ export default function DriversAdminPage() {
               <th className="p-3">NIC</th>
               <th className="p-3">License</th>
               <th className="p-3">Status</th>
-              <th className="p-3">Available Now</th>
+              <th className="p-3">Availability</th>
               <th className="p-3">Actions</th>
             </tr>
           </thead>
@@ -241,6 +241,7 @@ export default function DriversAdminPage() {
             setShowAvailabilityModal(false);
             setSelected(null);
           }}
+          onSaved={() => fetchData()}
         />
       )}
     </div>

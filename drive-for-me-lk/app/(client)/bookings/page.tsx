@@ -17,6 +17,7 @@ export default function BookingPage() {
     name: "",
     phone: "",
     pickup_location: "",
+    dropoff_location: "",
     arrival_time: "",
     vehicle_reg_no: "",
   });
@@ -171,6 +172,28 @@ export default function BookingPage() {
                 className="w-full rounded-xl border border-gray-300 px-12 py-3 text-sm focus:ring-2 focus:ring-[var(--primary)]/30"
                 onChange={(e) =>
                   setForm({ ...form, pickup_location: e.target.value })
+                }
+              />
+            </div>
+          </div>
+
+          {/* Dropoff */}
+          <div>
+            <label className="text-sm font-medium text-gray-700 mb-1 block">
+              Drop off Location
+            </label>
+            <div className="relative">
+              <MapPin
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                size={18}
+              />
+              <input
+                required
+                type="text"
+                placeholder="e.g. Bus Stand, Fort"
+                className="w-full rounded-xl border border-gray-300 px-12 py-3 text-sm focus:ring-2 focus:ring-[var(--primary)]/30"
+                onChange={(e) =>
+                  setForm({ ...form, dropoff_location: e.target.value })
                 }
               />
             </div>

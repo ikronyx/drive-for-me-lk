@@ -11,6 +11,7 @@ export async function POST(req: Request) {
         customer_name: body.name,
         phone: body.phone,
         pickup_location: body.pickup_location,
+        dropoff_location: body.dropoff_location,
         arrival_time: body.arrival_time ? new Date(body.arrival_time) : null,
         vehicle_reg_no: body.vehicle_reg_no || null,
         status: "pending",

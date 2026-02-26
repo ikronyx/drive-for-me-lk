@@ -76,6 +76,58 @@ export default function BookingsAdminPage() {
   const totalPages = Math.ceil(sorted.length / pageSize);
   const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
 
+  function TableSkeleton() {
+    return (
+      <div className="bg-white rounded-xl shadow overflow-hidden animate-pulse">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-100 text-left">
+            <tr>
+              <th className="p-3">Name</th>
+              <th className="p-3">Phone</th>
+              <th className="p-3">Pickup</th>
+              <th className="p-3">Dropoff</th>
+              <th className="p-3">Arrival</th>
+              <th className="p-3">Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <tr key={i} className="border-t">
+                <td className="p-3">
+                  <div className="h-4 w-32 bg-gray-200 rounded" />
+                </td>
+                <td className="p-3">
+                  <div className="h-4 w-24 bg-gray-200 rounded" />
+                </td>
+                <td className="p-3">
+                  <div className="h-4 w-40 bg-gray-200 rounded" />
+                </td>
+                <td className="p-3">
+                  <div className="h-4 w-40 bg-gray-200 rounded" />
+                </td>
+                <td className="p-3">
+                  <div className="h-4 w-36 bg-gray-200 rounded" />
+                </td>
+                <td className="p-3 flex items-center justify-between">
+                  <div className="h-4 w-20 bg-gray-200 rounded" />
+                  <div className="h-6 w-28 bg-gray-200 rounded ml-2" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Pagination Skeleton */}
+        <div className="flex justify-between p-4">
+          <div className="h-8 w-24 bg-gray-200 rounded" />
+          <div className="h-6 w-32 bg-gray-200 rounded" />
+          <div className="h-8 w-24 bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-8">
       {/* Top Bar */}
@@ -122,79 +174,85 @@ export default function BookingsAdminPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-100 text-left">
-            <tr>
-              <th className="p-3">Name</th>
-              <th className="p-3">Phone</th>
-              <th className="p-3">Pickup</th>
-              <th className="p-3">Arrival</th>
-              <th className="p-3">Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {paginated.map((b) => (
-              <tr
-                key={b.id}
-                className="border-t hover:bg-gray-50 cursor-pointer"
-                onClick={() => {
-                  setSelected(b);
-                  setShowModal(true);
-                }}
-              >
-                <td className="p-3">{b.customer_name}</td>
-                <td className="p-3">{b.phone}</td>
-                <td className="p-3">{b.pickup_location}</td>
-                <td className="p-3">
-                  {b.arrival_time
-                    ? new Date(b.arrival_time).toLocaleString()
-                    : "-"}
-                </td>
-                <td className="p-3 flex items-center justify-between">
-                  <span>{b.status || "-"}</span>
-                  {b.status === "pending" && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // prevent row click
-                        setSelected(b);
-                        setShowAssignModal(true);
-                      }}
-                      className="px-3 py-1 text-white bg-[var(--primary)] rounded hover:bg-[var(--primary-dark)]"
-                    >
-                      Assign Driver
-                    </button>
-                  )}
-                </td>
+      {loading ? (
+        <TableSkeleton />
+      ) : (
+        <div className="bg-white rounded-xl shadow overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-100 text-left">
+              <tr>
+                <th className="p-3">Name</th>
+                <th className="p-3">Phone</th>
+                <th className="p-3">Pickup</th>
+                <th className="p-3">Dropoff</th>
+                <th className="p-3">Arrival</th>
+                <th className="p-3">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
 
-        {/* Pagination */}
-        <div className="flex justify-between p-4">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage((p) => p - 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
+            <tbody>
+              {paginated.map((b) => (
+                <tr
+                  key={b.id}
+                  className="border-t hover:bg-gray-50 cursor-pointer"
+                  onClick={() => {
+                    setSelected(b);
+                    setShowModal(true);
+                  }}
+                >
+                  <td className="p-3">{b.customer_name}</td>
+                  <td className="p-3">{b.phone}</td>
+                  <td className="p-3">{b.pickup_location}</td>
+                  <td className="p-3">{b.dropoff_location}</td>
+                  <td className="p-3">
+                    {b.arrival_time
+                      ? new Date(b.arrival_time).toLocaleString()
+                      : "-"}
+                  </td>
+                  <td className="p-3 flex items-center justify-between">
+                    <span>{b.status || "-"}</span>
+                    {b.status === "pending" && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelected(b);
+                          setShowAssignModal(true);
+                        }}
+                        className="px-3 py-1 text-white bg-[var(--primary)] rounded hover:bg-[var(--primary-dark)]"
+                      >
+                        Assign Driver
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-          <span>
-            Page {page} / {totalPages}
-          </span>
+          {/* Pagination */}
+          <div className="flex justify-between p-4">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
 
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage((p) => p + 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Next
-          </button>
+            <span>
+              Page {page} / {totalPages}
+            </span>
+
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage((p) => p + 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Modal */}
       {showModal && (
