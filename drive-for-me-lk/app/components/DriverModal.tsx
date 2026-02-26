@@ -50,16 +50,38 @@ export default function DriverModal({
 
     setLoading(true);
     try {
-      const url = isEdit ? `/api/drivers/${driver?.id}` : "/api/drivers";
-      const method = isEdit ? "PUT" : "POST";
+      // ✅ Use form.id for PUT request
+      let url = "/api/drivers";
+      let method: "POST" | "PUT" = "POST";
+
+      if (isEdit && form.id) {
+        url = `/api/drivers/${form.id}`;
+        method = "PUT";
+      }
+
+      const payload = {
+        full_name: form.full_name,
+        address: form.address,
+        nic: form.nic,
+        driver_license: form.driver_license,
+        phone_primary: form.phone_primary,
+        phone_secondary: form.phone_secondary,
+        nationality: form.nationality,
+        languages: form.languages,
+        status: form.status,
+        gender: form.gender,
+      };
+
+      // body: JSON.stringify(payload);
 
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       const json = await res.json();
+
       if (!json.ok) {
         alert(json.error || "Error saving driver");
       } else {
@@ -79,6 +101,7 @@ export default function DriverModal({
         <h2 className="text-xl font-bold">
           {isEdit ? "Edit Driver" : "Add Driver"}
         </h2>
+
         {loading && (
           <div className="w-full h-1 bg-gray-200 rounded overflow-hidden">
             <div className="h-full bg-[var(--primary)] animate-loading-bar"></div>
@@ -86,12 +109,11 @@ export default function DriverModal({
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* ID (readonly for editing) */}
           {isEdit && (
             <div>
               <label className="text-sm font-medium">ID</label>
               <input
-                disabled={loading}
+                disabled
                 value={form.id}
                 readOnly
                 className="w-full border rounded-lg px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
@@ -99,7 +121,6 @@ export default function DriverModal({
             </div>
           )}
 
-          {/* Full Name */}
           <div>
             <label className="text-sm font-medium">Full Name *</label>
             <input
@@ -110,7 +131,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* NIC */}
           <div>
             <label className="text-sm font-medium">NIC *</label>
             <input
@@ -121,7 +141,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Driver License */}
           <div>
             <label className="text-sm font-medium">Driver License *</label>
             <input
@@ -134,7 +153,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Primary Phone */}
           <div>
             <label className="text-sm font-medium">Phone Primary *</label>
             <input
@@ -147,7 +165,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Secondary Phone */}
           <div>
             <label className="text-sm font-medium">Phone Secondary</label>
             <input
@@ -160,7 +177,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Address */}
           <div className="md:col-span-2">
             <label className="text-sm font-medium">Address</label>
             <input
@@ -171,7 +187,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Nationality */}
           <div>
             <label className="text-sm font-medium">Nationality</label>
             <input
@@ -184,7 +199,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Languages */}
           <div>
             <label className="text-sm font-medium">Languages</label>
             <input
@@ -195,7 +209,6 @@ export default function DriverModal({
             />
           </div>
 
-          {/* Status */}
           <div>
             <label className="text-sm font-medium">Status</label>
             <select
@@ -209,7 +222,6 @@ export default function DriverModal({
             </select>
           </div>
 
-          {/* Gender */}
           <div>
             <label className="text-sm font-medium">Gender</label>
             <select
@@ -225,7 +237,6 @@ export default function DriverModal({
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end gap-3 pt-4">
           <button
             onClick={onClose}
