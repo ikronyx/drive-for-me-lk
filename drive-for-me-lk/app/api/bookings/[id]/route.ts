@@ -30,6 +30,11 @@ export async function PUT(
       },
     });
 
+    await prisma.booking_driver_assignment.updateMany({
+      where: { booking_id: id },
+      data: { status: body.status },
+    });
+
     return NextResponse.json({ ok: true, booking: updated });
   } catch (error) {
     console.error(error);

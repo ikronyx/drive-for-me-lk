@@ -67,15 +67,18 @@ export default function DriversAdminPage() {
   };
 
   function isAvailableNow(driver: Driver) {
-    if (!driver.available_from || !driver.available_to) return false;
+    // if (!driver.available_from || !driver.available_to) return false;
+    if (!driver) return true;
 
-    const now = new Date();
-    const from = new Date(driver.available_from);
-    const to = new Date(driver.available_to);
+    // const now = new Date();
+    // const from = new Date(driver.available_from);
+    // const to = new Date(driver.available_to);
 
-    return (
-      now >= from && now <= to && driver.availability_status === "available"
-    );
+    // return (
+    //   // now >= from && now <= to && driver.availability_status === "available"
+
+    // );
+    if (driver && driver.availability_status !== "unavailable") return true;
   }
 
   return (

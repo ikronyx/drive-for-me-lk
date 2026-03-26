@@ -64,14 +64,15 @@ model booking_driver_assignment {
 }
 
 model driver_availability {
-  id             Int       @id @default(autoincrement())
-  driver_id      Int
-  available_from DateTime  @db.Timestamp(6)
-  available_to   DateTime  @db.Timestamp(6)
-  status         String?   @default("available") @db.VarChar(20)
-  created_at     DateTime? @default(now()) @db.Timestamp(6)
-  updated_at     DateTime? @default(now()) @db.Timestamp(6)
-  drivers        drivers   @relation(fields: [driver_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id              Int       @id @default(autoincrement())
+  driver_id       Int
+  available_from  DateTime? @db.Timestamp(6)
+  available_to    DateTime? @db.Timestamp(6)
+  status          String?   @default("available") @db.VarChar(20)
+  created_at      DateTime? @default(now()) @db.Timestamp(6)
+  updated_at      DateTime? @default(now()) @db.Timestamp(6)
+  current_booking Int?      @default(-1)
+  drivers         drivers   @relation(fields: [driver_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([driver_id, status], map: "idx_driver_availability_driver_status")
 }

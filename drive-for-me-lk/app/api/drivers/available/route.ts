@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const driver_id = searchParams.get("driver_id");
 
-    // 👉 get single driver availability
+    // get single driver availability
     if (driver_id) {
       const availability = await prisma.driver_availability.findFirst({
         where: { driver_id: Number(driver_id) },
@@ -17,9 +17,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ ok: true, data: availability });
     }
 
-    // 👉 default list of available drivers
+    // default list of available drivers
     const availableDrivers = await prisma.driver_availability.findMany({
-      where: { status: "available" },
+      where: {
+        status: {
+          not: "unavailable",
+        },
+      },
       include: { drivers: true },
     });
 
@@ -44,9 +48,17 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // const { driver_id, available_from, available_to, status } = body;
     const { driver_id, available_from, available_to, status } = body;
 
-    if (!driver_id || !available_from || !available_to) {
+    // if (!driver_id || !available_from || !available_to) {
+    //   return NextResponse.json(
+    //     { ok: false, error: "Missing required fields" },
+    //     { status: 400 },
+    //   );
+    // }
+
+    if (!driver_id) {
       return NextResponse.json(
         { ok: false, error: "Missing required fields" },
         { status: 400 },

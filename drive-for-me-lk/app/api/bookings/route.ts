@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
     const booking = await prisma.bookings.create({
       data: {
-        customer_name: body.name,
+        customer_name: body.customer_name,
         phone: body.phone,
         pickup_location: body.pickup_location,
         dropoff_location: body.dropoff_location,
