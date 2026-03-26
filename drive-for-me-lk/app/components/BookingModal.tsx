@@ -26,6 +26,16 @@ export default function BookingModal({
 
   const isEdit = !!booking;
 
+  function formatLocalDateTime(value: string) {
+    const date = new Date(value);
+
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+      date.getDate(),
+    )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  }
+
   async function save() {
     const url = isEdit ? `/api/bookings/${booking.id}` : `/api/bookings`;
     const method = isEdit ? "PUT" : "POST";
@@ -67,9 +77,7 @@ export default function BookingModal({
                   <input
                     type="datetime-local"
                     className="w-full border rounded-lg px-3 py-2 mt-1"
-                    value={
-                      value ? new Date(value).toISOString().slice(0, 16) : ""
-                    }
+                    value={value ? formatLocalDateTime(value) : ""}
                     onChange={(e) =>
                       setForm({ ...form, [key]: e.target.value })
                     }

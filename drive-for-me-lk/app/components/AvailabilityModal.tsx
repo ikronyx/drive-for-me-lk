@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function AvailabilityModal({ driver, onClose }: any) {
+export default function AvailabilityModal({ driver, onClose, onSaved }: any) {
   const [availableFrom, setAvailableFrom] = useState("");
   const [availableTo, setAvailableTo] = useState("");
   const [status, setStatus] = useState("available");
@@ -32,8 +32,8 @@ export default function AvailabilityModal({ driver, onClose }: any) {
 
     const payload = {
       driver_id: driver.id,
-      available_from: availableFrom,
-      available_to: availableTo,
+      available_from: "2026-02-25 06:30:00",
+      available_to: "2026-02-25 06:30:00",
       status,
     };
 
@@ -61,6 +61,7 @@ export default function AvailabilityModal({ driver, onClose }: any) {
     if (!json.ok) {
       alert(json.error);
     } else {
+      if (onSaved) onSaved(); // trigger refresh in parent
       onClose();
     }
 
@@ -72,7 +73,7 @@ export default function AvailabilityModal({ driver, onClose }: any) {
       <div className="bg-white p-6 rounded-xl w-[400px] space-y-4">
         <h2 className="text-lg font-bold">Availability – {driver.full_name}</h2>
 
-        <input
+        {/* <input
           type="datetime-local"
           value={availableFrom}
           onChange={(e) => setAvailableFrom(e.target.value)}
@@ -84,7 +85,7 @@ export default function AvailabilityModal({ driver, onClose }: any) {
           value={availableTo}
           onChange={(e) => setAvailableTo(e.target.value)}
           className="w-full border p-2 rounded"
-        />
+        /> */}
 
         <select
           value={status}
@@ -105,7 +106,7 @@ export default function AvailabilityModal({ driver, onClose }: any) {
             disabled={loading}
             className="bg-[var(--primary)] text-white px-4 py-2 rounded"
           >
-            {availabilityId ? "Update" : "Create"}
+            {availabilityId ? "Set" : "Set"}
           </button>
         </div>
       </div>

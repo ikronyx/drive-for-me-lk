@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 type Driver = {
   id: number;
   name: string;
+  driver_id: number;
 };
 
 type Props = {
@@ -37,28 +38,67 @@ export default function AssignDriverModal({
     fetchDrivers();
   }, []);
 
+  function openWhatsApp(phone: string, message: string) {
+    const encoded = encodeURIComponent(message);
+    const url = `https://wa.me/${phone}?text=${encoded}`;
+    window.open(url, "_blank");
+  }
+
+  function buildDriverMessage({
+    name,
+    link,
+    bookingId,
+  }: {
+    name: string;
+    link: string;
+    bookingId: number;
+  }) {
+    return `Hello ${name},
+
+You have been assigned a new booking.
+
+Booking ID: ${bookingId}
+
+Please open the link below to view full details and manage your trip:
+${link}
+
+Thank you,
+Drive For Me Admin`;
+  }
+
   async function assignDriver() {
     if (!selectedDriver) return;
     setLoading(true);
+    console.log("driver here: ", selectedDriver);
+
     try {
       const res = await fetch("/api/bookings/assign-driver", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           booking_id: bookingId,
           driver_id: selectedDriver,
         }),
       });
-      const json = await res.json();
-      if (json.ok) {
-        onAssigned();
-        onClose();
-      } else {
-        alert(json.error || "Failed to assign driver");
+
+      const data = await res.json();
+
+      if (data.ok) {
+        const message = buildDriverMessage({
+          name: data.driver_name,
+          link: `${window.location.origin}${data.driver_access_link}`,
+          bookingId: bookingId,
+        });
+
+        openWhatsApp(data.driver_phone, message);
       }
     } catch (err) {
       console.error(err);
     }
+    onAssigned();
+    onClose();
     setLoading(false);
   }
 
@@ -79,7 +119,11 @@ export default function AssignDriverModal({
               Select a driver
             </option>
             {drivers.map((d) => (
-              <option className="text-black" key={d.id} value={d.id}>
+              <option
+                className="text-black"
+                key={d.driver_id} // 🔹 use driver_id as key
+                value={d.driver_id} // 🔹 value must match key
+              >
                 {d.name}
               </option>
             ))}
